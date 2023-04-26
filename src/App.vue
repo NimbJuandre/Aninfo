@@ -5,6 +5,7 @@
 </template>
 <script>
 import AppContent from "./components/AppContent.vue";
+
 export default {
   name: "App",
   components: {
@@ -19,6 +20,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.v-application {
+  background-color: rgb(237, 241, 245);
+  color: rgb(92, 114, 138);
 }
 
 nav {

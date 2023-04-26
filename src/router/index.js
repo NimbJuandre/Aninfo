@@ -6,7 +6,7 @@ const routes = [
     path: '/',
     name: 'search',
     component: SearchView,
-  }
+  },
 ];
 
 const router = createRouter({

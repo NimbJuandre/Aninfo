@@ -5,22 +5,44 @@
                 <div class="text-h4">Search</div>
             </div>
             <div class="mt-5">
-                <v-select v-model="select.id" :items="searchTypes" item-title="name" item-value="id"></v-select>
+                <v-select class="search-type" v-model="select.id" :items="searchTypes" item-title="name"
+                    item-value="id"></v-select>
             </div>
         </div>
-        <v-card class="ml-5 mr-5">
-            <div class="d-flex flex-row">
-                <v-text-field v-model="searchString" label="Search" single-line
-                    hide-details></v-text-field>
-                    <!-- <v-button>
-                        <v-icon icon="mdi-magnify"></v-icon>
-                    </v-button> -->
-            </div>
+        <v-card class="search-card" flat>
+            <v-container class="search-container" fluid grid-list-lg>
+                <v-layout row wrap>
+                    <v-text-field class="searchbar" bg-color="rgb(251,251,251)" color="grey" density="compact"
+                        v-model="searchString" label="Search" single-line prepend-inner-icon="mdi-magnify"
+                        hide-details></v-text-field>
+                    <v-btn size="large">
+                        <v-icon size="large" icon="mdi-filter-multiple-outline"></v-icon>
+                    </v-btn>
+                </v-layout>
+            </v-container>
         </v-card>
+        <v-btn size="large" @click="start()">
+            Start
+        </v-btn>
+        <v-btn size="large" @click="stop()">
+            Stop
+        </v-btn>
     </div>
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
+import { getCurrentInstance, ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+const internalInstance = getCurrentInstance();
+
+onMounted(() => {
+    //  [App.vue specific] When App.vue is first loaded start the progress bar
+    internalInstance.appContext.config.globalProperties.$Progress.start();
+    setTimeout(() => {
+        internalInstance.appContext.config.globalProperties.$Progress.finish();
+    }, 3500);
+})
 
 var searchString = ref("");
 const select = reactive({ id: 1 });
@@ -28,6 +50,12 @@ const searchTypes = reactive([
     { id: 1, name: "Anime", },
     { id: 2, name: "Manga", },
 ]);
+
+function start() {
+    router.push({
+        name: 'search2'
+    })
+}
 </script>
 <style>
 .header-text {
@@ -43,6 +71,18 @@ const searchTypes = reactive([
     ;
 }
 
+.search-card {
+    background-color: inherit;
+}
+
+.search-type .v-field__overlay {
+    opacity: 0.1;
+}
+
+.searchbar .v-field.v-field--prepended {
+    margin-bottom: -6px;
+}
+
 .v-select {
     --v-input-padding-top: 0px !important;
 }
@@ -51,6 +91,10 @@ const searchTypes = reactive([
     margin-top: 5px;
     margin-left: -15px;
     margin-right: -15px;
+}
+
+.searchbar .v-field__prepend-inner {
+    align-items: flex-start;
 }
 
 .v-select .v-field {
