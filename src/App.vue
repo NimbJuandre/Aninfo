@@ -22,6 +22,11 @@ export default {
   color: #2c3e50;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .v-application {
   background-color: rgb(237, 241, 245);
   color: rgb(92, 114, 138);

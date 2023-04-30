@@ -25,22 +25,33 @@
                 </v-container>
             </v-card>
         </v-container>
-        <v-container>
-            <Bucket :name="'TRENDING NOW'">
+        <v-container class="pr-0">
+            <Bucket v-if="recommendations" :data="recommendations" :name="'RECOMMENDATIONS'"
+                :viewMoreLink="'recommendations'">
             </Bucket>
         </v-container>
     </div>
 </template>
 <script setup>
 import { ref, reactive } from 'vue'
+import api from '../api'
 import Bucket from '../components/Bucket.vue'
 
 var searchString = ref("");
+var recommendations = ref(null);
 const select = reactive({ id: 1 });
 const searchTypes = reactive([
     { id: 1, name: "Anime", },
     { id: 2, name: "Manga", },
 ]);
+
+// functions
+async function getApiData() {
+    recommendations.value = await api.animeRecommendations();
+}
+
+getApiData();
+
 </script>
 <style>
 .header-text {
