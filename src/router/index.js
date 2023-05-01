@@ -1,22 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import SearchView from '../views/SearchView.vue';
+import HomeView from '../views/HomeView.vue';
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    redirect: '/Search',
-    component: SearchView,
+    component: HomeView,
   },
   {
-    path: '/Search',
-    name: 'search',
-    component: SearchView,
-  },
-  {
-    path: '/Search/Trending',
+    path: '/Trending',
     name: 'trending',
-    component: SearchView,
+    component: HomeView,
   },
 ];
 

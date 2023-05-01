@@ -12,7 +12,7 @@
             </div>
         </v-container>
         <v-container class="pa-0">
-            <v-card class="search-card ml-3" flat>
+            <v-card class="search-card" flat>
                 <v-container class="search-container" fluid grid-list-lg>
                     <v-layout class="search-wrapper" row wrap>
                         <v-text-field class="searchbar shadow" bg-color="rgb(251,251,251)" color="grey" variant="solo"
@@ -26,9 +26,26 @@
             </v-card>
         </v-container>
         <v-container class="pr-0">
-            <Bucket v-if="recommendations" :data="recommendations" :name="'RECOMMENDATIONS'"
-                :viewMoreLink="'recommendations'">
-            </Bucket>
+            <div v-if="loading">
+                <v-responsive class="mx-auto">
+                    <v-responsive class="ma-3" height="125" v-for="index in 5" :key="index">
+                        <v-skeleton-loader ref="skeleton" :boilerplate="false" type="image" :tile=true
+                            class="mx-auto"></v-skeleton-loader>
+                    </v-responsive>
+                </v-responsive>
+            </div>
+            <div v-if="!loading">
+                <Bucket v-if="trending" :data="trending" :name="'TRENDING'" :viewMoreLink="'trending'">
+                </Bucket>
+                <Bucket v-if="currentSeason" :data="currentSeason" :name="'HOT THIS SEASON'"
+                    :viewMoreLink="'currentSeason'">
+                </Bucket>
+                <Bucket v-if="nextSeason" :data="nextSeason" :name="'COMMING NEXT SEASON'" :viewMoreLink="'nextSeason'">
+                </Bucket>
+                <Bucket v-if="animeMostPopular" :data="animeMostPopular" :name="'ALL TIME POPULAR'"
+                    :viewMoreLink="'mostPopular'">
+                </Bucket>
+            </div>
         </v-container>
     </div>
 </template>
@@ -37,8 +54,13 @@ import { ref, reactive } from 'vue'
 import api from '../api'
 import Bucket from '../components/Bucket.vue'
 
+var currentSeason = ref(null);
+var nextSeason = ref(null);
+var trending = ref(null);
+var animeMostPopular = ref(null);
+
 var searchString = ref("");
-var recommendations = ref(null);
+var loading = ref(false);
 const select = reactive({ id: 1 });
 const searchTypes = reactive([
     { id: 1, name: "Anime", },
@@ -47,7 +69,12 @@ const searchTypes = reactive([
 
 // functions
 async function getApiData() {
-    recommendations.value = await api.animeRecommendations();
+    loading.value = true;
+    trending.value = await api.animeTrending(true);
+    currentSeason.value = await api.animeCurrentSeason(true);
+    nextSeason.value = await api.animeNextSeason(true);
+    animeMostPopular.value = await api.animeMostPopular(true);
+    loading.value = false;
 }
 
 getApiData();
@@ -56,11 +83,11 @@ getApiData();
 <style>
 .header-text {
     cursor: pointer;
-    font-size: 40px;
+    font-size: 38px;
     font-weight: 600;
     letter-spacing: .01em;
     padding: 20px;
-    padding-left: 30px;
+    padding-left: 17px;
     padding-right: 5px;
     padding-bottom: 0;
     font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
@@ -81,6 +108,10 @@ getApiData();
 
 .search-type .v-field__overlay {
     opacity: 0.1;
+}
+
+.v-field.v-field--appended {
+    --v-field-padding-end: 7px;
 }
 
 .searchbar .v-field.v-field--prepended {
@@ -115,6 +146,7 @@ getApiData();
 
 .v-select .v-field__input {
     padding-bottom: 5px;
+    padding-left: 20px;
 }
 
 .v-select .v-field__outline {

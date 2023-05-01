@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="pl-0">
     <div class="header" @click="ViewMore()">
       <div class="d-flex">
         <h3 class="bucket-text">{{ name }}</h3>
@@ -7,19 +7,12 @@
         <label class="view-all text-medium-emphasis text-right">View All</label>
       </div>
     </div>
-    <v-container fluid grid-list-md>
-      <v-layout row wrap v-if="data">
-        <!-- <v-responsive v-if="loading" class="mx-auto">
-          <v-responsive class="ma-3" height="125" v-for="index in 5" :key="index">
-            <v-skeleton-loader ref="skeleton" :boilerplate="false" type="image" :tile=true
-              class="mx-auto"></v-skeleton-loader>
-          </v-responsive>
-        </v-responsive> -->
-        <label>{{ data.label }}</label>
-        <div v-for="item in data" :key="item.id" class="d-flex align-center flex-column xs md6 lg6 pa-3">
+    <v-container class="pl-0 pr-0" v-if="data">
+      <v-row>
+        <v-col class="grid" cols="6" sm="4" md="3" lg="3" v-for="(item, index) in data" :key="index">
           <Card :item="item"></Card>
-        </div>
-      </v-layout>
+        </v-col>
+      </v-row>
     </v-container>
   </v-container>
 </template>
@@ -55,5 +48,9 @@ function ViewMore() {
 
 .bucket-text {
   font-weight: 600;
+}
+
+.grid {
+  padding-bottom: 50px;
 }
 </style>
