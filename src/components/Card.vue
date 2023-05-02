@@ -1,5 +1,5 @@
 <template>
-    <v-card class="card" ripple outlined elevation="10">
+    <v-card class="card" ripple outlined elevation="10" @click="ViewDetails(item.id)">
         <v-img aspect-ratio="1" :src="item.images.large_image_url"></v-img>
     </v-card>
     <p class="card-title text-left pt-1">
@@ -7,11 +7,18 @@
     </p>
 </template>
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 const props = defineProps({
     item: {
         type: Object
     }
 })
+
+function ViewDetails(id) {
+    router.push({ name: 'detail', params: {id: props.item.id} })
+} 
 
 </script>
 <style>

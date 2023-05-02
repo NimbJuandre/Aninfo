@@ -21,6 +21,29 @@ const api = {
             console.log(error);
         }
     },
+    getAnime: async (id) => {
+        try {
+            const response = await fetch(`${BASE_URL}/anime/${id}/full`);
+            const results = await response.json();
+
+            if (!results)
+                return;
+
+            const animeData = results.data.map(result => ({
+                id: result.mal_id,
+                title: result.title,
+                images: result.images.jpg,
+                synopsis: result.synopsis
+            }));
+
+            if (preview)
+                return animeData.slice(0, 8)
+            else
+                return animeData
+        } catch (error) {
+            console.log(error);
+        }
+    },
     animeRecommendations: async (preview) => {
         try {
             const response = await fetch(`${BASE_URL}/recommendations/anime`);
