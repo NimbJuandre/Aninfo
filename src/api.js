@@ -1,9 +1,11 @@
+import store from './store'
+
 const BASE_URL = 'https://api.jikan.moe/v4';
 
 const api = {
-    animeSearch: async (query) => {
+    search: async (query) => {
         try {
-            const response = await fetch(`${BASE_URL}/anime?q=${query}`);
+            const response = await fetch(`${BASE_URL}/${store.getters.typeName}?q=${query}`);
             const results = await response.json();
 
             if (!results)
@@ -11,7 +13,7 @@ const api = {
 
             const animeData = results.data.map(result => ({
                 id: result.mal_id,
-                title: result.title,
+                title: result.title_english || result.title,
                 images: result.images.jpg,
                 synopsis: result.synopsis
             }));
@@ -21,9 +23,24 @@ const api = {
             console.log(error);
         }
     },
-    getAnime: async (id) => {
+    getData: async (id) => {
         try {
-            const response = await fetch(`${BASE_URL}/anime/${id}/full`);
+            const dataResponse = await fetch(`${BASE_URL}/${store.getters.typeName}/${id}/full`);
+            var data = (await dataResponse.json()).data;
+
+            const picturesResponse = await fetch(`${BASE_URL}/${store.getters.typeName}/${id}/pictures`);
+            data.pictures = (await picturesResponse.json()).data;
+
+            debugger;
+            
+            return data;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    recommendations: async (preview) => {
+        try {
+            const response = await fetch(`${BASE_URL}/recommendations/${store.getters.typeName}`);
             const results = await response.json();
 
             if (!results)
@@ -31,7 +48,7 @@ const api = {
 
             const animeData = results.data.map(result => ({
                 id: result.mal_id,
-                title: result.title,
+                title: result.title_english || result.title,
                 images: result.images.jpg,
                 synopsis: result.synopsis
             }));
@@ -44,9 +61,9 @@ const api = {
             console.log(error);
         }
     },
-    animeRecommendations: async (preview) => {
+    trending: async (preview) => {
         try {
-            const response = await fetch(`${BASE_URL}/recommendations/anime`);
+            const response = await fetch(`${BASE_URL}/top/${store.getters.typeName}?filter=airing`);
             const results = await response.json();
 
             if (!results)
@@ -54,7 +71,7 @@ const api = {
 
             const animeData = results.data.map(result => ({
                 id: result.mal_id,
-                title: result.title,
+                title: result.title_english || result.title,
                 images: result.images.jpg,
                 synopsis: result.synopsis
             }));
@@ -67,9 +84,9 @@ const api = {
             console.log(error);
         }
     },
-    animeTrending: async (preview) => {
+    mostPopular: async (preview) => {
         try {
-            const response = await fetch(`${BASE_URL}/top/anime?filter=airing`);
+            const response = await fetch(`${BASE_URL}/top/${store.getters.typeName}?filter=bypopularity`);
             const results = await response.json();
 
             if (!results)
@@ -77,7 +94,7 @@ const api = {
 
             const animeData = results.data.map(result => ({
                 id: result.mal_id,
-                title: result.title,
+                title: result.title_english || result.title,
                 images: result.images.jpg,
                 synopsis: result.synopsis
             }));
@@ -90,30 +107,7 @@ const api = {
             console.log(error);
         }
     },
-    animeMostPopular: async (preview) => {
-        try {
-            const response = await fetch(`${BASE_URL}/top/anime?filter=bypopularity`);
-            const results = await response.json();
-
-            if (!results)
-                return;
-
-            const animeData = results.data.map(result => ({
-                id: result.mal_id,
-                title: result.title,
-                images: result.images.jpg,
-                synopsis: result.synopsis
-            }));
-
-            if (preview)
-                return animeData.slice(0, 8)
-            else
-                return animeData
-        } catch (error) {
-            console.log(error);
-        }
-    },
-    animeCurrentSeason: async (preview) => {
+    currentSeason: async (preview) => {
         try {
             const response = await fetch(`${BASE_URL}/seasons/now`);
             const results = await response.json();
@@ -123,9 +117,10 @@ const api = {
 
             const animeData = results.data.map(result => ({
                 id: result.mal_id,
-                title: result.title,
+                title: result.title_english || result.title,
                 images: result.images.jpg,
-                synopsis: result.synopsis
+                synopsis: result.synopsis,
+                type: result.type
             }));
 
             if (preview)
@@ -136,7 +131,7 @@ const api = {
             console.log(error);
         }
     },
-    animeNextSeason: async (preview) => {
+    nextSeason: async (preview) => {
         try {
             const response = await fetch(`${BASE_URL}/seasons/upcoming`);
             const results = await response.json();
@@ -146,9 +141,10 @@ const api = {
 
             const animeData = results.data.map(result => ({
                 id: result.mal_id,
-                title: result.title,
+                title: result.title_english || result.title,
                 images: result.images.jpg,
-                synopsis: result.synopsis
+                synopsis: result.synopsis,
+                type: result.type
             }));
 
             if (preview)

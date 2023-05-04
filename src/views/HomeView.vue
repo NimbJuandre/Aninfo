@@ -50,10 +50,12 @@
     </div>
 </template>
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import api from '../api'
 import Bucket from '../components/Bucket.vue'
+import { useStore } from 'vuex'
 
+const store = useStore();
 var currentSeason = ref(null);
 var nextSeason = ref(null);
 var trending = ref(null);
@@ -67,13 +69,30 @@ const searchTypes = reactive([
     { id: 2, name: "Manga", },
 ]);
 
+// Watches
+watch(select, (newValue, oldValue) => {
+    store.commit('setType', newValue.id);
+    getApiData();
+});
+
+
 // functions
 async function getApiData() {
     loading.value = true;
-    trending.value = await api.animeTrending(true);
-    currentSeason.value = await api.animeCurrentSeason(true);
-    nextSeason.value = await api.animeNextSeason(true);
-    animeMostPopular.value = await api.animeMostPopular(true);
+
+    currentSeason = ref(null);
+    nextSeason = ref(null);
+    trending = ref(null);
+    animeMostPopular = ref(null);
+
+    trending.value = await api.trending(true);
+    animeMostPopular.value = await api.mostPopular(true);
+
+    if (store.getters.type === 1) {
+        currentSeason.value = await api.currentSeason(true);
+        nextSeason.value = await api.nextSeason(true);
+    }
+
     loading.value = false;
 }
 

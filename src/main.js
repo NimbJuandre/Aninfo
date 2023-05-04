@@ -6,6 +6,7 @@ import * as directives from 'vuetify/directives';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@mdi/font/css/materialdesignicons.css'
 import VueProgressBar from "@aacassandra/vue3-progressbar";
+import store from './store'
 
 import { createApp } from 'vue';
 import App from './App.vue';
@@ -35,4 +36,5 @@ createApp(App)
     .use(VueProgressBar, options)
     .use(router)
     .use(vuetify)
+    .use(store)
     .mount('#app');
