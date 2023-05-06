@@ -35,15 +35,16 @@
                 </v-responsive>
             </div>
             <div v-if="!loading">
-                <Bucket v-if="trending" :data="trending" :name="'TRENDING'" :viewMoreLink="'trending'">
+                <Bucket v-if="trending" :media="trending" :name="'TRENDING'" :viewMoreLink="'trending'">
                 </Bucket>
-                <Bucket v-if="currentSeason" :data="currentSeason" :name="'HOT THIS SEASON'"
+                <Bucket v-if="currentSeason" :media="currentSeason" :name="'HOT THIS SEASON'"
                     :viewMoreLink="'currentSeason'">
                 </Bucket>
-                <Bucket v-if="nextSeason" :data="nextSeason" :name="'COMMING NEXT SEASON'" :viewMoreLink="'nextSeason'">
+                <Bucket v-if="nextSeason" :media="nextSeason" :name="'COMMING NEXT SEASON'" :viewMoreLink="'nextSeason'">
                 </Bucket>
-                <Bucket v-if="animeMostPopular" :data="animeMostPopular" :name="'ALL TIME POPULAR'"
-                    :viewMoreLink="'mostPopular'">
+                <Bucket v-if="mostPopular" :media="mostPopular" :name="'ALL TIME POPULAR'" :viewMoreLink="'mostPopular'">
+                </Bucket>
+                <Bucket v-if="top" :media="top" :name="'Top'" :viewMoreLink="'top'">
                 </Bucket>
             </div>
         </v-container>
@@ -51,7 +52,7 @@
 </template>
 <script setup>
 import { ref, reactive, watch } from 'vue'
-import api from '../api'
+import getData from '../services/getData'
 import Bucket from '../components/Bucket.vue'
 import { useStore } from 'vuex'
 
@@ -59,7 +60,8 @@ const store = useStore();
 var currentSeason = ref(null);
 var nextSeason = ref(null);
 var trending = ref(null);
-var animeMostPopular = ref(null);
+var mostPopular = ref(null);
+var top = ref(null);
 
 var searchString = ref("");
 var loading = ref(false);
@@ -83,14 +85,19 @@ async function getApiData() {
     currentSeason = ref(null);
     nextSeason = ref(null);
     trending = ref(null);
-    animeMostPopular = ref(null);
+    mostPopular = ref(null);
+    top = ref(null);
 
-    trending.value = await api.trending(true);
-    animeMostPopular.value = await api.mostPopular(true);
+    var result = await getData.getHomePageSections();
+    var data = result.data.data;
+
+    trending.value = data.trending.media;
+    mostPopular.value = data.popular.media;
+    top.value = data.top.media
 
     if (store.getters.type === 1) {
-        currentSeason.value = await api.currentSeason(true);
-        nextSeason.value = await api.nextSeason(true);
+        currentSeason.value = data.season.media;
+        nextSeason.value = data.nextSeason.media;
     }
 
     loading.value = false;

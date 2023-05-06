@@ -9,7 +9,7 @@ const getters = {
         return state.type;
     },
     typeName(state) {
-        return state.type === 1 ? 'anime' : 'manga';
+        return state.type === 1 ? 'ANIME' : 'MANGA';
     }
 }
 const mutations = {

@@ -1,9 +1,9 @@
 <template>
     <v-card class="card" ripple outlined elevation="10" @click="ViewDetails(item.id)">
-        <v-img aspect-ratio="1" :src="item.images.large_image_url"></v-img>
+        <v-img aspect-ratio="1" :src="item.coverImage.large"></v-img>
     </v-card>
     <p class="card-title text-left pt-1">
-        {{ item.title }}
+        {{ item.title.english }}
     </p>
 </template>
 <script setup>
@@ -17,8 +17,8 @@ const props = defineProps({
 })
 
 function ViewDetails(id) {
-    router.push({ name: 'detail', params: {id: props.item.id} })
-} 
+    router.push({ name: 'detail', params: { id: props.item.id } })
+}
 
 </script>
 <style>
@@ -27,9 +27,11 @@ function ViewDetails(id) {
     transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
     cursor: pointer;
 }
+
 .card:hover {
     transform: scale(1.03);
 }
+
 .card-title {
     display: -webkit-box;
     -webkit-line-clamp: 2;

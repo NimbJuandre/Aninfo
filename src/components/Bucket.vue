@@ -7,9 +7,9 @@
         <label class="view-all text-medium-emphasis text-right">View All</label>
       </div>
     </div>
-    <v-container class="pl-0 pr-0" v-if="data">
+    <v-container class="pl-0 pr-0" v-if="media">
       <v-row>
-        <v-col class="grid" cols="6" sm="4" md="3" lg="3" v-for="(item, index) in data" :key="index">
+        <v-col class="grid" cols="6" sm="4" md="3" lg="3" v-for="(item, index) in media" :key="index">
           <Card :item="item"></Card>
         </v-col>
       </v-row>
@@ -28,7 +28,7 @@ const props = defineProps({
   viewMoreLink: {
     type: String
   },
-  data: {
+  media: {
     type: Array
   },
 })
