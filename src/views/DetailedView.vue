@@ -11,17 +11,17 @@
             <div class="header">
                 <div class="d-flex flex-row">
                     <v-img class="thumbnail" :src="details.coverImage.large"></v-img>
-                    <v-tabs v-model="tab" show-arrows>
-                        <v-tab size="small" value="Overview">Item One</v-tab>
-                        <v-tab size="small" value="Characters">Item Two</v-tab>
-                        <v-tab size="small" value="Staff">Item Three</v-tab>
-                        <v-tab size="small" value="Stats">Item Three</v-tab>
-                        <v-tab size="small" value="Social">Item Three</v-tab>
-                    </v-tabs>
                 </div>
                 <p class="card-title text-left pt-4">
                     {{ title }}
                 </p>
+                <v-tabs v-model="tab" slider-color="rgb(237, 241, 245)" selected-class="selected-filter">
+                    <v-tab size="small" value="Overview">Item One</v-tab>
+                    <v-tab size="small" value="Characters">Item Two</v-tab>
+                    <v-tab size="small" value="Staff">Item Three</v-tab>
+                    <v-tab size="small" value="Stats">Item Three</v-tab>
+                    <v-tab size="small" value="Social">Item Three</v-tab>
+                </v-tabs>
             </div>
         </v-container>
     </div>
@@ -48,10 +48,6 @@ async function getDetails() {
 getDetails();
 </script>
 <style>
-.white-bg {
-    background: rgb(250, 250, 250);
-}
-
 .header-wrapper {
     max-width: 100%;
 }
@@ -85,8 +81,12 @@ getDetails();
     width: 100%;
 }
 
-.v-slide-group {
-    margin-top: -15px;
+.selected-filter {
+    color: rgb(61, 180, 242);
+}
+
+.v-tabs {
+    margin-top: 15px;
 }
 
 .v-slide-group__next,

@@ -22,6 +22,10 @@ export default {
   color: #2c3e50;
 }
 
+.white-bg {
+  background: rgb(250, 250, 250);
+}
+
 a {
   text-decoration: none;
   color: inherit;
