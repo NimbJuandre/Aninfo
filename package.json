@@ -17,7 +17,8 @@
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuetify": "^3.1.13",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "vuex-plugin-persistedstate": "^1.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

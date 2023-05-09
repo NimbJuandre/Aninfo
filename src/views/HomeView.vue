@@ -65,7 +65,7 @@ var top = ref(null);
 
 var searchString = ref("");
 var loading = ref(false);
-const select = reactive({ id: 1 });
+const select = reactive({ id: store.getters.type });
 const searchTypes = reactive([
     { id: 1, name: "Anime", },
     { id: 2, name: "Manga", },

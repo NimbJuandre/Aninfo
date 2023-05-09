@@ -1,13 +1,14 @@
 <template>
     <v-card class="card" ripple outlined elevation="10" @click="ViewDetails(item.id)">
-        <v-img aspect-ratio="1" :src="item.coverImage.large"></v-img>
+        <v-img aspect-ratio="1" :src="item.coverImage.extraLarge"></v-img>
     </v-card>
     <p class="card-title text-left pt-1">
-        {{ item.title.english }}
+        {{ title }}
     </p>
 </template>
 <script setup>
 import { useRouter } from 'vue-router';
+import { computed } from 'vue'
 
 const router = useRouter()
 const props = defineProps({
@@ -16,6 +17,10 @@ const props = defineProps({
     }
 })
 
+// Computed Props
+const title = computed(() => props.item.title.english || props.item.title.userPreferred)
+
+// Functions
 function ViewDetails(id) {
     router.push({ name: 'detail', params: { id: props.item.id } })
 }

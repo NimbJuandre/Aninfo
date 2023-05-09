@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import vuexPersistedstate from "vuex-plugin-persistedstate";
 
 const state = {
     type: 1
@@ -21,5 +22,6 @@ const mutations = {
 export default createStore({
     state,
     getters,
-    mutations
+    mutations,
+    plugins: [vuexPersistedstate()]
 })
