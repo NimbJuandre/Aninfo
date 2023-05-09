@@ -1,30 +1,84 @@
 <template>
-    <v-container class="white-bg">
-        <div class="header">
-            <div class="d-flex flex-row">
-                <v-img class="thumbnail" :src="details.coverImage.large"></v-img>
-            </div>
-            <p class="card-title text-left pt-4">
-                {{ title }}
-            </p>
-            <v-tabs v-model="tab" slider-color="rgb(237, 241, 245)" selected-class="selected-filter">
-                <v-tab size="small" value="Overview">Item One</v-tab>
-                <v-tab size="small" value="Characters">Item Two</v-tab>
-                <v-tab size="small" value="Staff">Item Three</v-tab>
-                <v-tab size="small" value="Stats">Item Three</v-tab>
-                <v-tab size="small" value="Social">Item Three</v-tab>
-            </v-tabs>
-        </div>
-    </v-container>
+    <div>
+        <v-table density class="stats-table">
+            <thead>
+                <tr>
+                    <th class="text-left">
+                        Airing
+                    </th>
+                    <th class="text-left">
+                        Format
+                    </th>
+                    <th class="text-left">
+                        Episodes
+                    </th>
+                    <th class="text-left">
+                        Episode Duration
+                    </th>
+                    <th class="text-left">
+                        Status
+                    </th>
+                    <th class="text-left">
+                        Start Date
+                    </th>
+                    <th class="text-left">
+                        End Date
+                    </th>
+                    <th class="text-left">
+                        Season
+                    </th>
+                    <th class="text-left">
+                        Average Score
+                    </th>
+                    <th class="text-left">
+                        Mean Score
+                    </th>
+                    <th class="text-left">
+                        Studio
+                    </th>
+                    <th class="text-left">
+                        Producers
+                    </th>
+                    <th class="text-left">
+                        Source
+                    </th>
+                    <th class="text-left">
+                        Genre
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ airing }}</td>
+                </tr>
+            </tbody>
+        </v-table>
+    </div>
 </template>
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
-    stats: {
+    details: {
         type: Object
     }
 })
 
+// Computed Props
+const airing = computed(() => {
+    var airingInDate = new Date(props.details.nextAiringEpisode.timeUntilAiring);
+    var days = `${airingInDate.getDay()}d`;
+    var hours = `${airingInDate.getHours()}h`;
+    var minutes = `${airingInDate.getMinutes()}m`;
+
+    return `Ep ${props.details.nextAiringEpisode.episode}: ${days} ${hours} ${minutes}`;
+})
+
+
 </script>
 <style>
-
+.stats-table td {
+    white-space: nowrap;
+    padding-bottom: 10px !important;
+}
 </style>

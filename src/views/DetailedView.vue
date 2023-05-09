@@ -7,8 +7,8 @@
                 </v-img>
             </div>
         </v-container>
-        <v-container class="white-bg">
-            <div class="header">
+        <v-container class="white-bg pa-0">
+            <div class="header pa-4">
                 <div class="d-flex flex-row">
                     <v-img class="thumbnail" :src="details.coverImage.large"></v-img>
                 </div>
@@ -24,16 +24,22 @@
                 </v-tabs>
             </div>
         </v-container>
+
+        <v-container class="white-bg">
+            <Stats :details="details"></Stats>
+        </v-container>
     </div>
 </template>
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import getData from '../services/getData'
+import Stats from '../components/Stats.vue'
 
 const route = useRoute();
 var details = ref(null);
 var tab = ref(null);
+var stats = ref(null)
 
 // Computed Props
 const title = computed(() => details.value.title.english || details.value.title.userPreferred)
@@ -41,7 +47,9 @@ const title = computed(() => details.value.title.english || details.value.title.
 // Functions
 async function getDetails() {
     var data = await getData.getDetails(route.params.id);
-    details.value = data.data.data.Media;
+    var media = data.data.data.Media
+    
+    details.value = media;
     console.log(data.data.data.Media);
 }
 
