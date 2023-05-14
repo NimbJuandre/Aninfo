@@ -2,7 +2,7 @@
     <div>
         <div class="d-flex flex-row">
             <div class="text-left heading ml-8 mb-5">
-                Description
+                Relations
             </div>
         </div>
         <v-container class="card-list white-bg pa-0 center-container mb-10">

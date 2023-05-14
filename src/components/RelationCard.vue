@@ -31,7 +31,7 @@ const title = computed(() => {
     return props.relation.node.title.english || props.relation.node.title.userPreferred
 });
 </script>
-<style>
+<style scoped>
 .card {
     height: 130px;
     margin-right: 25px;
