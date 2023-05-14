@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container class="center-container white-bg pa-0 mb-10">
         <v-table density class="stats-table">
             <thead>
                 <tr>
@@ -43,20 +43,34 @@
                         Source
                     </th>
                     <th class="text-left">
-                        Genre
+                        Genres
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ airing }}</td>
+                    <td class="stand-out">{{ airing }}</td>
+                    <td>{{ props.details.format }}</td>
+                    <td>{{ props.details.episodes }}</td>
+                    <td>{{ props.details.duration }}</td>
+                    <td>{{ functions.camalize(props.details.status) }}</td>
+                    <td>{{ getDate(props.details.startDate) }}</td>
+                    <td>{{ getDate(props.details.endDate) }}</td>
+                    <td>{{ seasonYear }}</td>
+                    <td>{{ `${props.details.averageScore}%` }}</td>
+                    <td>{{ `${props.details.meanScore}%` }}</td>
+                    <td>{{ mainStudio }}</td>
+                    <td>{{ altStudios }}</td>
+                    <td>{{ functions.camalize(props.details.source.replace('_', ' ')) }}</td>
+                    <td>{{ genres }}</td>
                 </tr>
             </tbody>
         </v-table>
-    </div>
+    </v-container>
 </template>
 <script setup>
 import { computed } from 'vue'
+import functions from '../functions'
 
 const props = defineProps({
     details: {
@@ -64,21 +78,66 @@ const props = defineProps({
     }
 })
 
+// Functions
+function getDate(dateObj) {
+    const date = new Date(dateObj.year, dateObj.month, dateObj.day);
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
 // Computed Props
 const airing = computed(() => {
-    var airingInDate = new Date(props.details.nextAiringEpisode.timeUntilAiring);
-    var days = `${airingInDate.getDay()}d`;
-    var hours = `${airingInDate.getHours()}h`;
-    var minutes = `${airingInDate.getMinutes()}m`;
+    var airingInSeconds = props.details.nextAiringEpisode.timeUntilAiring;
+    const days = Math.floor(airingInSeconds / 86400);
+    const hours = Math.floor((airingInSeconds % 86400) / 3600);
+    const minutes = Math.floor((airingInSeconds % 3600) / 60);
 
-    return `Ep ${props.details.nextAiringEpisode.episode}: ${days} ${hours} ${minutes}`;
-})
-
-
+    return `Ep ${props.details.nextAiringEpisode.episode}: ${days}d ${hours}h ${minutes}m`;
+});
+const seasonYear = computed(() => {
+    return `${functions.camalize(props.details.season)} ${props.details.seasonYear}`;
+});
+const mainStudio = computed(() => {
+    const studio = props.details.studios.edges
+        .filter((s) => {
+            return s.isMain === true;
+        }).map(obj => obj.node.name);
+    return studio[0];
+});
+const altStudios = computed(() => {
+    const studio = props.details.studios.edges
+        .filter((s) => {
+            return s.isMain === false;
+        }).map(obj => obj.node.name);
+    return studio.join(", ");
+});
+const genres = computed(() => {
+    return props.details.genres.join(", ");
+});
 </script>
 <style>
 .stats-table td {
     white-space: nowrap;
     padding-bottom: 10px !important;
+    text-align: left;
+    color: rgb(92, 114, 138);
+}
+
+.stats-table .v-table__wrapper {
+    padding-top: 8px;
+}
+
+.v-table .v-table__wrapper>table>thead>tr>th {
+    color: rgb(146, 153, 161);
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.stand-out {
+    color: rgb(61, 180, 242) !important;
+    font-weight: 500;
 }
 </style>

@@ -7,7 +7,7 @@
                 </v-img>
             </div>
         </v-container>
-        <v-container class="white-bg pa-0">
+        <v-container class="white-bg pa-0 mb-5">
             <div class="header pa-4">
                 <div class="d-flex flex-row">
                     <v-img class="thumbnail" :src="details.coverImage.large"></v-img>
@@ -16,18 +16,21 @@
                     {{ title }}
                 </p>
                 <v-tabs v-model="tab" slider-color="rgb(237, 241, 245)" selected-class="selected-filter">
-                    <v-tab size="small" value="Overview">Item One</v-tab>
-                    <v-tab size="small" value="Characters">Item Two</v-tab>
-                    <v-tab size="small" value="Staff">Item Three</v-tab>
-                    <v-tab size="small" value="Stats">Item Three</v-tab>
-                    <v-tab size="small" value="Social">Item Three</v-tab>
+                    <v-tab size="small" value="Overview">Overview</v-tab>
+                    <v-tab size="small" value="Characters">Characters</v-tab>
+                    <v-tab size="small" value="Staff">Staff</v-tab>
+                    <v-tab size="small" value="Stats">Stats</v-tab>
+                    <v-tab size="small" value="Social">Social</v-tab>
                 </v-tabs>
             </div>
         </v-container>
 
-        <v-container class="white-bg">
-            <Stats :details="details"></Stats>
-        </v-container>
+        <!-- Stats -->
+        <Stats :details="details"></Stats>
+        <!-- Desc -->
+        <Desc :details="details"></Desc>
+        <!-- Relations -->
+        <Relations :details="details"></Relations>
     </div>
 </template>
 <script setup>
@@ -35,6 +38,8 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import getData from '../services/getData'
 import Stats from '../components/Stats.vue'
+import Desc from '../components/Desc.vue'
+import Relations from '../components/Relations.vue'
 
 const route = useRoute();
 var details = ref(null);
@@ -48,7 +53,7 @@ const title = computed(() => details.value.title.english || details.value.title.
 async function getDetails() {
     var data = await getData.getDetails(route.params.id);
     var media = data.data.data.Media
-    
+
     details.value = media;
     console.log(data.data.data.Media);
 }

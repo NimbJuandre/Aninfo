@@ -26,6 +26,10 @@ export default {
   background: rgb(250, 250, 250);
 }
 
+.center-container {
+  width: 90%;
+}
+
 a {
   text-decoration: none;
   color: inherit;
