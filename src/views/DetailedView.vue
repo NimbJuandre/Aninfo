@@ -31,6 +31,8 @@
         <Desc :details="details"></Desc>
         <!-- Relations -->
         <Relations :details="details"></Relations>
+        <!-- Characters -->
+        <Characters :details="details"></Characters>
     </div>
 </template>
 <script setup>
@@ -40,11 +42,11 @@ import getData from '../services/getData'
 import Stats from '../components/Stats.vue'
 import Desc from '../components/Desc.vue'
 import Relations from '../components/Relations.vue'
+import Characters from '../components/Characters.vue'
 
 const route = useRoute();
 var details = ref(null);
 var tab = ref(null);
-var stats = ref(null)
 
 // Computed Props
 const title = computed(() => details.value.title.english || details.value.title.userPreferred)
@@ -71,7 +73,7 @@ getDetails();
 
 .no-image {
     background-color: rgb(39, 44, 56);
-    height: 130px;
+    height: 210px;
 }
 
 .thumbnail {

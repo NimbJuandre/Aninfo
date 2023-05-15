@@ -7,6 +7,7 @@
     </p>
 </template>
 <script setup>
+import functions from '../functions'
 import { useRouter } from 'vue-router';
 import { computed } from 'vue'
 
@@ -22,7 +23,7 @@ const title = computed(() => props.item.title.english || props.item.title.userPr
 
 // Functions
 function ViewDetails(id) {
-    router.push({ name: 'detail', params: { id: props.item.id } })
+    router.push({ name: 'detail', params: { id: id } })
 }
 
 </script>

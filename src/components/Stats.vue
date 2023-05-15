@@ -1,6 +1,6 @@
 <template>
-    <v-container class="center-container white-bg pa-0 mb-10">
-        <v-table density class="stats-table">
+    <v-container class="pa-4">
+        <v-table density class="stats-table white-bg">
             <thead>
                 <tr>
                     <th class="text-left">
@@ -51,8 +51,8 @@
                 <tr>
                     <td class="stand-out">{{ airing }}</td>
                     <td>{{ props.details.format }}</td>
-                    <td>{{ props.details.episodes }}</td>
-                    <td>{{ props.details.duration }}</td>
+                    <td>{{ props.details.episodes  }}</td>
+                    <td>{{ `${props.details.duration} mins` }}</td>
                     <td>{{ functions.camalize(props.details.status) }}</td>
                     <td>{{ getDate(props.details.startDate) }}</td>
                     <td>{{ getDate(props.details.endDate) }}</td>
@@ -80,6 +80,9 @@ const props = defineProps({
 
 // Functions
 function getDate(dateObj) {
+    if (dateObj.year == null || dateObj.month == null || dateObj.day == null)
+        return '';
+
     const date = new Date(dateObj.year, dateObj.month, dateObj.day);
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);

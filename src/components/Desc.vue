@@ -1,12 +1,10 @@
 <template>
     <div>
-        <div class="d-flex flex-row">
-            <div class="text-left heading ml-8 mb-5">
+        <v-container class="pa-4">
+            <div class="text-left heading mb-2">
                 Description
             </div>
-        </div>
-        <v-container class="white-bg pa-0 center-container mb-10">
-            <p class="desc-text"><span v-html="props.details.description"></span></p>
+            <p class="desc-text white-bg"><span v-html="props.details.description"></span></p>
         </v-container>
     </div>
 </template>

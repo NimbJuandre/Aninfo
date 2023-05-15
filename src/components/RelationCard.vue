@@ -1,16 +1,16 @@
 <template>
-    <v-card class="card" ripple outlined elevation="10" @click="ViewDetails(item.id)">
+    <v-card class="card white-bg" ripple elevation="0" @click="viewDetails(props.relation.id)">
         <v-img aspect-ratio="1" :src="relation.node.coverImage.large"></v-img>
-        <v-card-item>
+        <v-card-item class="card-item">
             <div class="title-wrapper">
-                <div class="type mb-1">
+                <div class="type mb-2">
+                    {{ functions.camalize(props.relation.relationType) }}
+                </div>
+                <div class="title">
                     {{ title }}
                 </div>
-                <div class="title mb-1">
-                    {{ title }}
-                </div>
-                <div class="text-h6 mb-1">
-                    Headline
+                <div class="typeAndStatus mb-1">
+                    {{ typeAndStatus }}
                 </div>
             </div>
         </v-card-item>
@@ -19,7 +19,9 @@
 <script setup>
 import functions from '../functions'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const props = defineProps({
     relation: {
         type: Object
@@ -30,6 +32,14 @@ const props = defineProps({
 const title = computed(() => {
     return props.relation.node.title.english || props.relation.node.title.userPreferred
 });
+const typeAndStatus = computed(() => {
+    return functions.camalize(`${props.relation.node.format} · ${props.relation.node.status}`);
+});
+
+// Functions
+function viewDetails(id) {
+    router.push({ name: 'detail', params: { id: id } })
+}
 </script>
 <style scoped>
 .card {
@@ -38,6 +48,10 @@ const title = computed(() => {
     display: flex;
     width: 375px;
     margin-right: 15px;
+}
+
+.card-item {
+    display: block;
 }
 
 .card .v-img {
@@ -50,10 +64,25 @@ const title = computed(() => {
     white-space: break-spaces;
 }
 
-.title {
-    font-size: 1rem !important;
+.type {
     line-height: 1.2rem;
+    font-size: 1rem !important;
+    text-align: left;
+    color: rgb(61, 180, 242)
+}
+
+.title {
+    font-size: 0.9rem !important;
+    line-height: 1.1rem;
     text-align: left;
     color: rgb(92, 114, 138);
+}
+
+.typeAndStatus {
+    font-size: 0.8rem !important;
+    text-align: left;
+    color: rgb(146, 153, 161);
+    bottom: 10px;
+    position: absolute;
 }
 </style>
