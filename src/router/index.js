@@ -9,10 +9,16 @@ const routes = [
     component: HomeView,
   },
   {
-    path: '/Detail/:id',
-    name: 'detail',
+    path: '/detail/:type/:id',
+    name: 'Detail',
     component: DetailView,
+    props: true
   },
+  // {
+  //   path: '/Detail/manga/:id',
+  //   name: 'detailManga',
+  //   component: DetailView,
+  // },
   {
     path: '/Trending',
     name: 'trending',

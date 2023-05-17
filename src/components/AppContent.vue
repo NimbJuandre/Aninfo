@@ -9,7 +9,9 @@
 <script setup>
 import { getCurrentInstance, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const router = useRouter()
 const internalInstance = getCurrentInstance();
 
@@ -18,7 +20,16 @@ onMounted(() => {
 })
 
 router.beforeEach((to, from, next) => {
-  //  does the page we want to go to have a meta.progress object
+  const parts = to.path.split("/");
+
+  if (parts.length >= 2) {
+    const type = parts[2];
+    if (type == 'anime')
+      store.commit('setType', 1);
+    else if (type == 'manga')
+      store.commit('setType', 2);
+  }
+
   if (to.meta.progress !== undefined) {
     let meta = to.meta.progress;
     // parse meta tags

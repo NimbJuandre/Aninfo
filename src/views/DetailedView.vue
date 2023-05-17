@@ -36,7 +36,7 @@
     </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch  } from 'vue'
 import { useRoute } from 'vue-router'
 import getData from '../services/getData'
 import Stats from '../components/Stats.vue'
@@ -47,6 +47,13 @@ import Characters from '../components/Characters.vue'
 const route = useRoute();
 var details = ref(null);
 var tab = ref(null);
+
+watch( // This is to refresh the component when navigating to the same component but different paramaters
+  () => route.params,
+  (newParams, oldParams) => {
+    getDetails();
+  }
+)
 
 // Computed Props
 const title = computed(() => details.value.title.english || details.value.title.userPreferred)

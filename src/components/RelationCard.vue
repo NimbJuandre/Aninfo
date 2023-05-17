@@ -1,5 +1,5 @@
 <template>
-    <v-card class="card white-bg" ripple elevation="0" @click="viewDetails(props.relation.id)">
+    <v-card class="card white-bg" ripple elevation="0" @click="viewDetails(props.relation.node.id)">
         <v-img aspect-ratio="1" :src="relation.node.coverImage.large"></v-img>
         <v-card-item class="card-item">
             <div class="title-wrapper">
@@ -17,8 +17,8 @@
     </v-card>
 </template>
 <script setup>
-import functions from '../functions'
-import { computed } from 'vue'
+import functions from '../functions';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -38,7 +38,8 @@ const typeAndStatus = computed(() => {
 
 // Functions
 function viewDetails(id) {
-    router.push({ name: 'detail', params: { id: id } })
+    var type = props.relation.node.type.toLowerCase();
+    router.push({ name: 'Detail', params: { type: type, id: id } });
 }
 </script>
 <style scoped>

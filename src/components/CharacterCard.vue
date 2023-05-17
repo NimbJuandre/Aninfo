@@ -12,13 +12,13 @@
             </div>
         </div>
         <div class="staff">
-            <v-img aspect-ratio="1" :src="character.voiceActors[0].image.large"></v-img>
+            <v-img aspect-ratio="1" :src="(character.voiceActors[0]?.image?.large)"></v-img>
             <div class="character-wrapper pa-2">
                 <div class="name">
-                    {{ character.voiceActors[0].name.userPreferred }}
+                    {{ character.voiceActors[0]?.name?.userPreferred }}
                 </div>
                 <div class="role">
-                    {{ functions.camalize(character.voiceActors[0].language) }}
+                    {{ functions.camalize(character.voiceActors[0]?.language) }}
                 </div>
             </div>
         </div>

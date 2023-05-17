@@ -7,10 +7,11 @@
     </p>
 </template>
 <script setup>
-import functions from '../functions'
 import { useRouter } from 'vue-router';
 import { computed } from 'vue'
+import { useStore } from 'vuex'
 
+const store = useStore();
 const router = useRouter()
 const props = defineProps({
     item: {
@@ -23,7 +24,8 @@ const title = computed(() => props.item.title.english || props.item.title.userPr
 
 // Functions
 function ViewDetails(id) {
-    router.push({ name: 'detail', params: { id: id } })
+    var typeName = store.getters.typeName.toLowerCase();
+    router.push({ name: 'Detail', params: { type: typeName, id: id } });
 }
 
 </script>

@@ -51,7 +51,7 @@
                 <tr>
                     <td class="stand-out">{{ airing }}</td>
                     <td>{{ props.details.format }}</td>
-                    <td>{{ props.details.episodes  }}</td>
+                    <td>{{ props.details.episodes }}</td>
                     <td>{{ `${props.details.duration} mins` }}</td>
                     <td>{{ functions.camalize(props.details.status) }}</td>
                     <td>{{ getDate(props.details.startDate) }}</td>
@@ -90,6 +90,9 @@ function getDate(dateObj) {
 
 // Computed Props
 const airing = computed(() => {
+    if (!props.details.nextAiringEpisode)
+        return '';
+        
     var airingInSeconds = props.details.nextAiringEpisode.timeUntilAiring;
     const days = Math.floor(airingInSeconds / 86400);
     const hours = Math.floor((airingInSeconds % 86400) / 3600);
