@@ -2,13 +2,17 @@
     <div>
         <v-container class="pt-0 pa-4">
             <div class="text-left heading mb-2">
-                Description
+                Staff
             </div>
-            <p class="desc-text white-bg"><span v-html="props.details.description"></span></p>
+            <div class="grid-wrap mb-2 pb-2">
+                <StaffCard :staff="staff" v-for="(staff, index) in details.staffPreview.edges" :key="index">
+                </StaffCard>
+            </div>
         </v-container>
     </div>
 </template>
 <script setup>
+import StaffCard from './StaffCard.vue'
 const props = defineProps({
     details: {
         type: Object
@@ -21,10 +25,9 @@ const props = defineProps({
     font-weight: 500;
 }
 
-.desc-text {
-    text-align: left;
-    border-radius: 4px;
-    font-size: 1.0rem;
-    padding: 20px;
+.grid-wrap {
+    display: grid;
+    grid-column-gap: 30px;
+    grid-row-gap: 15px;
 }
 </style>

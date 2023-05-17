@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-container class="pa-4">
+        <v-container class="pt-0 pa-4">
             <div class="text-left heading mb-2">
                 Characters
             </div>

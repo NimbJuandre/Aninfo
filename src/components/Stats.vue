@@ -1,6 +1,6 @@
 <template>
-    <v-container class="pa-4">
-        <v-table density class="stats-table white-bg">
+    <v-container class="pt-0 pa-4">
+        <v-table class="stats-table white-bg">
             <thead>
                 <tr>
                     <th class="text-left">

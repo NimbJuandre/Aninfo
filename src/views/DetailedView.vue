@@ -33,26 +33,35 @@
         <Relations :details="details"></Relations>
         <!-- Characters -->
         <Characters :details="details"></Characters>
+        <!-- Staffs -->
+        <Staffs :details="details"></Staffs>
+        <!-- Trailer -->
+        <Trailer :details="details"></Trailer>
+        <!-- Recommendations -->
+        <Recommendations :details="details"></Recommendations>
     </div>
 </template>
 <script setup>
-import { ref, computed, watch  } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import getData from '../services/getData'
 import Stats from '../components/Stats.vue'
 import Desc from '../components/Desc.vue'
 import Relations from '../components/Relations.vue'
 import Characters from '../components/Characters.vue'
+import Staffs from '../components/Staffs.vue'
+import Trailer from '../components/Trailer.vue'
+import Recommendations from '../components/Recommendations.vue'
 
 const route = useRoute();
 var details = ref(null);
 var tab = ref(null);
 
 watch( // This is to refresh the component when navigating to the same component but different paramaters
-  () => route.params,
-  (newParams, oldParams) => {
-    getDetails();
-  }
+    () => route.params,
+    (newParams, oldParams) => {
+        getDetails();
+    }
 )
 
 // Computed Props

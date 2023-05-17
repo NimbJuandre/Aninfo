@@ -2,22 +2,25 @@
     <div>
         <v-container class="pt-0 pa-4">
             <div class="text-left heading mb-2">
-                Relations
+                Recommendations
             </div>
             <div class="card-list mb-2 pb-2">
-                <RelationCard :relation="relation" v-for="(relation, index) in details.relations.edges" :key="index">
-                </RelationCard>
+                <RecommendationsCard :item="recommendation" v-for="(recommendation, index) in details.recommendations.nodes"
+                    :key="index">
+                </RecommendationsCard>
             </div>
         </v-container>
     </div>
 </template>
 <script setup>
-import RelationCard from './RelationCard.vue'
+import RecommendationsCard from './RecommendationsCard.vue'
+
 const props = defineProps({
     details: {
         type: Object
     }
 })
+
 </script>
 <style>
 .heading {
