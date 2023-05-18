@@ -36,7 +36,7 @@
         <!-- Staffs -->
         <Staffs :details="details"></Staffs>
         <!-- Trailer -->
-        <Trailer :details="details"></Trailer>
+        <Trailer :details="details" :key="trailerKey"></Trailer>
         <!-- Recommendations -->
         <Recommendations :details="details"></Recommendations>
     </div>
@@ -54,6 +54,7 @@ import Trailer from '../components/Trailer.vue'
 import Recommendations from '../components/Recommendations.vue'
 
 const route = useRoute();
+const trailerKey = ref(0);
 var details = ref(null);
 var tab = ref(null);
 
@@ -61,6 +62,7 @@ watch( // This is to refresh the component when navigating to the same component
     () => route.params,
     (newParams, oldParams) => {
         getDetails();
+        trailerKey.value += 1 // Hack to force the trailer component to update to fix the youtube video to autoplay
     }
 )
 

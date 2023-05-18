@@ -11,9 +11,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { computed } from 'vue'
-import { useStore } from 'vuex'
 
-const store = useStore();
 const router = useRouter()
 const props = defineProps({
     item: {

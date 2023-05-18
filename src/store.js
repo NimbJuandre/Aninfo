@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import vuexPersistedstate from "vuex-plugin-persistedstate";
 
 const state = {
-    type: 1
+    type: 1,
 }
 
 const getters = {

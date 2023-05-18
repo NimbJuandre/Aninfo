@@ -5,28 +5,20 @@
                 Trailer
             </div>
             <div class="video-container">
-                <YouTube :src="link" :vars="{ autoplay: 0 }" @ready="onReady" ref="youtubeEl" />
+                <LiteYouTubeEmbed :id="details.trailer?.id" />
             </div>
         </v-container>
     </div>
 </template>
 <script setup>
-import YouTube from 'vue3-youtube'
-import { ref, computed, onMounted } from 'vue'
+import LiteYouTubeEmbed from 'vue-lite-youtube-embed'
+import 'vue-lite-youtube-embed/style.css'
 
-const youtubeEl = ref(null);
 const props = defineProps({
     details: {
         type: Object
     }
 })
-
-// Computed Props
-const link = computed(() => `https://www.youtube.com/watch?v=${props.details.trailer?.id}`)
-
-function onReady() {
-    youtubeEl.value.pauseVideo()
-}
 </script>
 <style>
 .heading {
