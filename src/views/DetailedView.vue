@@ -15,13 +15,6 @@
                 <p class="card-title text-left pt-4">
                     {{ title }}
                 </p>
-                <v-tabs v-model="tab" slider-color="rgb(237, 241, 245)" selected-class="selected-filter">
-                    <v-tab size="small" value="Overview">Overview</v-tab>
-                    <v-tab size="small" value="Characters">Characters</v-tab>
-                    <v-tab size="small" value="Staff">Staff</v-tab>
-                    <v-tab size="small" value="Stats">Stats</v-tab>
-                    <v-tab size="small" value="Social">Social</v-tab>
-                </v-tabs>
             </div>
         </v-container>
 
@@ -75,6 +68,7 @@ async function getDetails() {
     var media = data.data.data.Media
 
     details.value = media;
+    window.scrollTo(0, 0)
     console.log(data.data.data.Media);
 }
 

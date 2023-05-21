@@ -1,13 +1,13 @@
 <template>
   <v-container class="pl-0">
-    <div class="header" @click="ViewMore()">
+    <div v-if="name" class="header" @click="ViewMore()">
       <div class="d-flex">
         <h3 class="bucket-text">{{ name }}</h3>
         <v-spacer></v-spacer>
         <label class="view-all text-medium-emphasis text-right">View All</label>
       </div>
     </div>
-    <v-container class="pl-0 pr-0" v-if="media">
+    <v-container class="pl-0 pr-0">
       <v-row>
         <v-col class="grid" cols="6" sm="4" md="3" lg="3" v-for="(item, index) in media" :key="index">
           <Card :item="item"></Card>

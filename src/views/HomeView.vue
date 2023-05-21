@@ -16,55 +16,73 @@
                 <v-container class="search-container" fluid grid-list-lg>
                     <v-layout class="search-wrapper" row wrap>
                         <v-text-field class="searchbar shadow" bg-color="rgb(251,251,251)" color="grey" variant="solo"
-                            density="compact" v-model="searchString" label="Search" single-line
-                            prepend-inner-icon="mdi-magnify" hide-details></v-text-field>
-                        <v-btn class="filter-btn shadow" size="large">
-                            <v-icon size="large" icon="mdi-filter-multiple-outline"></v-icon>
-                        </v-btn>
+                            density="compact" v-model="searchString" label="Search" single-line clearable
+                            @click:clear="getApiData" prepend-inner-icon="mdi-magnify" hide-details></v-text-field>
                     </v-layout>
                 </v-container>
             </v-card>
         </v-container>
         <v-container class="pr-0">
-            <div v-if="loading">
+            <!-- <div v-if="loading">
                 <v-responsive class="mx-auto">
                     <v-responsive class="ma-3" height="125" v-for="index in 5" :key="index">
                         <v-skeleton-loader ref="skeleton" :boilerplate="false" type="image" :tile=true
                             class="mx-auto"></v-skeleton-loader>
                     </v-responsive>
                 </v-responsive>
-            </div>
-            <div v-if="!loading">
-                <Bucket v-if="trending" :media="trending" :name="'TRENDING'" :viewMoreLink="'trending'">
+            </div> -->
+            <div>
+                <div v-if="searching">
+                    <div class="pr-1">
+                        <div class="loading-img pl-0" :style="{
+                            backgroundImage:
+                                'url(' +
+                                bgImage +
+                                ')',
+                        }"></div>
+                    </div>
+                </div>
+
+                <Bucket v-if="searched.length" :media="searched" :name="''" :viewMoreLink="''">
                 </Bucket>
-                <Bucket v-if="currentSeason" :media="currentSeason" :name="'HOT THIS SEASON'"
+                <Bucket v-if="trending.length" :media="trending" :name="'TRENDING'" :viewMoreLink="'trending'">
+                </Bucket>
+                <Bucket v-if="currentSeason.length" :media="currentSeason" :name="'HOT THIS SEASON'"
                     :viewMoreLink="'currentSeason'">
                 </Bucket>
-                <Bucket v-if="nextSeason" :media="nextSeason" :name="'COMMING NEXT SEASON'" :viewMoreLink="'nextSeason'">
+                <Bucket v-if="nextSeason.length" :media="nextSeason" :name="'COMMING NEXT SEASON'"
+                    :viewMoreLink="'nextSeason'">
                 </Bucket>
-                <Bucket v-if="mostPopular" :media="mostPopular" :name="'ALL TIME POPULAR'" :viewMoreLink="'mostPopular'">
+                <Bucket v-if="mostPopular.length" :media="mostPopular" :name="'ALL TIME POPULAR'"
+                    :viewMoreLink="'mostPopular'">
                 </Bucket>
-                <Bucket v-if="top" :media="top" :name="'Top'" :viewMoreLink="'top'">
+                <Bucket v-if="top.length" :media="top" :name="'Top'" :viewMoreLink="'top'">
                 </Bucket>
             </div>
         </v-container>
     </div>
 </template>
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { getCurrentInstance, ref, reactive, watch } from 'vue'
 import getData from '../services/getData'
 import Bucket from '../components/Bucket.vue'
 import { useStore } from 'vuex'
+import functions from '../functions';
+import imgUrl from '../assets/searching.gif'
+
+const internalInstance = getCurrentInstance();
 
 const store = useStore();
-var currentSeason = ref(null);
-var nextSeason = ref(null);
-var trending = ref(null);
-var mostPopular = ref(null);
-var top = ref(null);
+var searched = ref([]);
+var currentSeason = ref([]);
+var nextSeason = ref([]);
+var trending = ref([]);
+var mostPopular = ref([]);
+var top = ref([]);
 
+var bgImage = ref(imgUrl);
 var searchString = ref("");
-var loading = ref(false);
+var searching = ref(false);
 const select = reactive({ id: store.getters.type });
 const searchTypes = reactive([
     { id: 1, name: "Anime", },
@@ -72,25 +90,33 @@ const searchTypes = reactive([
 ]);
 
 // Watches
-watch(select, (newValue, oldValue) => {
+watch(select, (newValue) => {
     store.commit('setType', newValue.id);
-    getApiData();
-});
 
+    if (searchString.value)
+        search();
+    else
+        getApiData();
+});
+watch(searchString, functions.debounce(function (newVal) {
+    if (newVal)
+        search();
+    else
+        getApiData();
+}, 350)
+);
 
 // functions
 async function getApiData() {
-    loading.value = true;
-
-    currentSeason = ref(null);
-    nextSeason = ref(null);
-    trending = ref(null);
-    mostPopular = ref(null);
-    top = ref(null);
+    internalInstance.appContext.config.globalProperties.$Progress.start();
+    searching.value = true;
 
     var result = await getData.getHomePageSections();
     var data = result.data.data;
 
+    resetBuckets();
+
+    searching.value = false;
     trending.value = data.trending.media;
     mostPopular.value = data.popular.media;
     top.value = data.top.media
@@ -100,7 +126,28 @@ async function getApiData() {
         nextSeason.value = data.nextSeason.media;
     }
 
-    loading.value = false;
+    internalInstance.appContext.config.globalProperties.$Progress.finish();
+}
+async function search() {
+    searching.value = true;
+    internalInstance.appContext.config.globalProperties.$Progress.start();
+
+    resetBuckets();
+
+    var result = await getData.search(searchString.value);
+    var data = result.data.data;
+
+    searching.value = false;
+    searched.value = data.Page.media;
+    internalInstance.appContext.config.globalProperties.$Progress.finish();
+}
+function resetBuckets() {
+    searched.value = [];
+    currentSeason.value = [];
+    nextSeason.value = [];
+    trending.value = [];
+    mostPopular.value = [];
+    top.value = [];
 }
 
 getApiData();
@@ -122,6 +169,13 @@ getApiData();
 
 .search-wrapper {
     overflow: inherit !important;
+}
+
+.loading-img {
+    height: 356px;
+    background-position-x: center;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .shadow {
