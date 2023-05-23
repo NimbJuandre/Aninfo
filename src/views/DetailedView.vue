@@ -1,6 +1,11 @@
 <template>
     <div v-if="details">
         <v-container class="header-wrapper pa-0">
+            <div class="text-left">
+                <v-btn class="back-btn ma-4 mt-7" icon @click="backToHome" abs>
+                    <v-icon>mdi-arrow-left</v-icon>
+                </v-btn>
+            </div>
             <div class="banner">
                 <v-img :class="{ 'no-image': details.bannerImage === null }" :src="details.bannerImage">
                     <div class="card-shadow"></div>
@@ -14,6 +19,9 @@
                 </div>
                 <p class="card-title text-left pt-4">
                     {{ title }}
+                </p>
+                <p v-if="dubAvailable" class="card-dub-available text-left pt-4">
+                    English Dub is available
                 </p>
             </div>
         </v-container>
@@ -37,6 +45,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useRouter } from 'vue-router';
 import getData from '../services/getData'
 import Stats from '../components/Stats.vue'
 import Desc from '../components/Desc.vue'
@@ -47,14 +56,16 @@ import Trailer from '../components/Trailer.vue'
 import Recommendations from '../components/Recommendations.vue'
 
 const route = useRoute();
+const router = useRouter()
 const trailerKey = ref(0);
 var details = ref(null);
-var tab = ref(null);
+var dubAvailable = ref(false);
 
 watch( // This is to refresh the component when navigating to the same component but different paramaters
     () => route.params,
     (newParams, oldParams) => {
         getDetails();
+        getDubStatus();
         trailerKey.value += 1 // Hack to force the trailer component to update to fix the youtube video to autoplay
     }
 )
@@ -69,12 +80,29 @@ async function getDetails() {
 
     details.value = media;
     window.scrollTo(0, 0)
-    console.log(data.data.data.Media);
+}
+async function getDubStatus() {
+    var data = await getData.getCharacters(route.params.id);
+    var media = data.data.data.Media
+    console.log(media)
+    if (media.characters?.edges?.some((edge) => edge.role == "MAIN" &&  edge.voiceActorRoles?.some((actor) => actor.dubGroup != null && actor.voiceActor.language == "English")))
+        dubAvailable.value = true;
+    else
+        dubAvailable.value = false;
+}
+function backToHome() {
+    router.push({ name: 'home' });
 }
 
 getDetails();
+getDubStatus()
 </script>
 <style>
+.back-btn {
+    position: absolute;
+    z-index: 1;
+}
+
 .header-wrapper {
     max-width: 100%;
 }
@@ -100,6 +128,12 @@ getDetails();
 .card-title {
     font-size: 1.1rem;
     font-weight: 500;
+}
+
+.card-dub-available {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgb(61, 180, 242);
 }
 
 .card-shadow {

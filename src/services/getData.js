@@ -302,6 +302,15 @@ export default {
     };
     return API().post("/", data);
   },
+  getCharacters(id) {
+    var data = {};
+    data.query = "query media($id:Int,$page:Int){Media(id:$id){id characters(page:$page,sort:[ROLE,RELEVANCE,ID]){pageInfo{total perPage currentPage lastPage hasNextPage}edges{id role name voiceActorRoles(sort:[RELEVANCE,ID]){roleNotes dubGroup voiceActor{id name{userPreferred}language:languageV2 image{large}}}node{id name{userPreferred}image{large}}}}}}";
+    data.variables = {
+      id: id,
+      type: store.getters.typeName,
+    };
+    return API().post("/", data);
+  },
   getHomePageSections() {
     var seasons = this.getSeason();
     var data = {};

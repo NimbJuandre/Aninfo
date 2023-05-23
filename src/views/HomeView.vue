@@ -33,7 +33,7 @@
             </div> -->
             <div>
                 <div v-if="searching">
-                    <div class="pr-1">
+                    <div class="pr-4">
                         <div class="loading-img pl-0" :style="{
                             backgroundImage:
                                 'url(' +
@@ -111,10 +111,10 @@ async function getApiData() {
     internalInstance.appContext.config.globalProperties.$Progress.start();
     searching.value = true;
 
+    resetBuckets();
+
     var result = await getData.getHomePageSections();
     var data = result.data.data;
-
-    resetBuckets();
 
     searching.value = false;
     trending.value = data.trending.media;
