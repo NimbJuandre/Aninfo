@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
+import ViewMore from '../views/ViewMore.vue';
 import DetailView from '../views/DetailedView.vue';
 
 const routes = [
@@ -7,6 +8,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView,
+  },
+  {
+    path: '/viewMore/:type',
+    name: 'ViewMore',
+    component: ViewMore,
   },
   {
     path: '/detail/:type/:id',

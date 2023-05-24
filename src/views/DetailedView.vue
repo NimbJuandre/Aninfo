@@ -44,8 +44,8 @@
 </template>
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex';
 import getData from '../services/getData'
 import Stats from '../components/Stats.vue'
 import Desc from '../components/Desc.vue'
@@ -58,6 +58,7 @@ import Recommendations from '../components/Recommendations.vue'
 const route = useRoute();
 const router = useRouter()
 const trailerKey = ref(0);
+const store = useStore();
 var details = ref(null);
 var dubAvailable = ref(false);
 
@@ -82,10 +83,15 @@ async function getDetails() {
     window.scrollTo(0, 0)
 }
 async function getDubStatus() {
+    if (store.getters.typeName == 'MANGA') { // Dont check if the dub exists for manga
+        dubAvailable.value = false;
+        return;
+    }
+
     var data = await getData.getCharacters(route.params.id);
     var media = data.data.data.Media
-    console.log(media)
-    if (media.characters?.edges?.some((edge) => edge.role == "MAIN" &&  edge.voiceActorRoles?.some((actor) => actor.dubGroup != null && actor.voiceActor.language == "English")))
+
+    if (media.characters?.edges?.some((edge) => edge.role == "MAIN" && edge.voiceActorRoles?.some((actor) => actor.voiceActor.language == "English")))
         dubAvailable.value = true;
     else
         dubAvailable.value = false;
@@ -140,18 +146,5 @@ getDubStatus()
     background: linear-gradient(180deg, rgba(6, 13, 34, 0) 40%, rgba(6, 13, 34, .6));
     height: 100%;
     width: 100%;
-}
-
-.selected-filter {
-    color: rgb(61, 180, 242);
-}
-
-.v-tabs {
-    margin-top: 15px;
-}
-
-.v-slide-group__next,
-.v-slide-group__prev {
-    min-width: 0px !important;
 }
 </style>

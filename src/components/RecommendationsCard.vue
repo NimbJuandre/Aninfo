@@ -50,17 +50,8 @@ function viewDetails(id) {
     -webkit-line-clamp: 3;
 }
 
-.card-item {
-    display: block;
-}
-
 .card .v-img {
     width: 130px;
     height: 180px;
-}
-
-.title-wrapper {
-    width: 250px;
-    white-space: break-spaces;
 }
 </style>

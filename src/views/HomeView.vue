@@ -23,14 +23,6 @@
             </v-card>
         </v-container>
         <v-container class="pr-0">
-            <!-- <div v-if="loading">
-                <v-responsive class="mx-auto">
-                    <v-responsive class="ma-3" height="125" v-for="index in 5" :key="index">
-                        <v-skeleton-loader ref="skeleton" :boilerplate="false" type="image" :tile=true
-                            class="mx-auto"></v-skeleton-loader>
-                    </v-responsive>
-                </v-responsive>
-            </div> -->
             <div>
                 <div v-if="searching">
                     <div class="pr-4">
@@ -79,7 +71,6 @@ var nextSeason = ref([]);
 var trending = ref([]);
 var mostPopular = ref([]);
 var top = ref([]);
-
 var bgImage = ref(imgUrl);
 var searchString = ref("");
 var searching = ref(false);

@@ -34,7 +34,7 @@ const props = defineProps({
 })
 
 function ViewMore() {
-  router.push({ path: `${router.currentRoute.value.path}/${this.props.viewMoreLink}` })
+  router.push({ name: 'ViewMore', params: { type: props.viewMoreLink } });
 }
 </script>
 <style>
