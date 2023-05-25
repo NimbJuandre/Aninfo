@@ -86,7 +86,7 @@ function backToHome() {
 getApiData();
 
 </script>
-<style>
+<style scoped>
 .full-container {
     max-width: 100% !important;
 }

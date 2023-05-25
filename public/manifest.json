@@ -6,7 +6,7 @@
     "start_url": "/",
     "name": "Aninfo",
     "short_name": "Aninfo",
-    "description": "Brows and view your favorite anime's information",
+    "description": "Browse and view your favorite anime's information",
     "icons": [
         {
             "src": "/icon-192x192.png",
