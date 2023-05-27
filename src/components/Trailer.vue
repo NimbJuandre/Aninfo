@@ -5,7 +5,7 @@
                 Trailer
             </div>
             <div class="video-container">
-                <LiteYouTubeEmbed :id="details.trailer?.id" />
+                <LiteYouTubeEmbed :id="details.trailer?.id" title="" />
             </div>
         </v-container>
     </div>

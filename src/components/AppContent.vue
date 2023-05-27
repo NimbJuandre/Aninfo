@@ -1,8 +1,10 @@
 <template>
   <VMain class="main-content">
-    <VSlideXTransition mode="out-in">
-      <RouterView />
-    </VSlideXTransition>
+    <router-view v-slot="{ Component }">
+      <transition>
+        <component :is="Component" />
+      </transition>
+    </router-view>
     <vue-progress-bar></vue-progress-bar>
   </VMain>
 </template>
